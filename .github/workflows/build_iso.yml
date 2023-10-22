@@ -1,0 +1,69 @@
+name: archiso builder
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: set iso file name
+      id: set_iso_filename
+      run: |
+        OUTPUT_FILE=archlinux-`date -u +%Y.%m.%d`-x86_64.iso
+        echo "::set-output name=output_file::$OUTPUT_FILE"
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+      id: extract_branch
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: build iso
+      run: |
+        docker pull archlinux
+        docker run -d -i -t --privileged -v `pwd`:/root/repo --name arch archlinux
+        docker exec -t arch pacman -Syyu --noconfirm
+        docker exec -t arch pacman-key --init
+        docker exec -t arch pacman-key --populate
+        docker exec -t arch pacman -S --noconfirm git wget archiso
+        docker exec -t arch sh -c "cp -r /usr/share/archiso/configs/releng/ /root/repo/archlive"
+        docker exec -t arch sh -c "cd /root/repo/ && ./setup.sh"
+        docker exec -t arch sh -c "mkarchiso -v -w /root/repo/out /root/repo/archlive"
+        docker exec -t arch sh -c "sha256sum /out/${{ steps.set_iso_filename.outputs.iso_filename }} > /out/checksum.txt"
+        docker cp arch:/out/${{ steps.set_iso_filename.outputs.iso_filename }} output/${{ steps.set_iso_filename.outputs.iso_filename }}
+        docker cp arch:/out/checksum.txt output/checksum.txt
+
+    - name: Create Release
+      id: create-new-release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+    - name: Upload Iso Checksum
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create-new-release.outputs.upload_url }}
+          asset_path: output/checksum.txt
+          asset_name: checksum.txt
+          asset_content_type: text/plain
+
+    - name: Upload Iso
+      uses: actions/upload-release-asset@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create-new-release.outputs.upload_url }}
+          asset_path: output/${{ steps.set_iso_filename.outputs.iso_filename }}
+          asset_name: ${{ steps.extract_branch.outputs.branch }}_${{ steps.set_iso_filename.outputs.iso_filename }}
+          asset_content_type: application/x-cd-image
+

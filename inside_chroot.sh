@@ -4,17 +4,17 @@ ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 
-root_partition=$(cat /etc/root_partition.txt)
-username=$(cat /etc/username.txt)
-if [ -f "/etc/hostname.txt" ]; then
-  cat /etc/hostname.txt > /etc/hostname
+root_partition=$(cat /etc/installer_cache/root_partition.txt)
+username=$(cat /etc/installer_cache/username.txt)
+if [ -f "/etc/installer_cache/hostname.txt" ]; then
+  cat /etc/installer_cache/hostname.txt > /etc/hostname
 else
   echo "natu" > /etc/hostname
 fi
 
-if [ -f "/etc/username.txt" ]; then
-  if [ -f "/etc/password.txt" ]; then
-    password=$(cat /etc/password.txt)
+if [ -f "/etc/installer_cache/username.txt" ]; then
+  if [ -f "/etc/installer_cache/password.txt" ]; then
+    password=$(cat /etc/installer_cache/password.txt)
     useradd -m -p $(perl -e 'print crypt($ARGV[0], "password")' $password) $username
   else
      useradd -m "$username"

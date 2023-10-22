@@ -169,11 +169,11 @@ menu() {
             elif grep -qi 'vendor_id.*amd' /proc/cpuinfo; then
                 pacstrap /mnt amd-ucode
             fi
-  	    pacstrap -K /mnt base base-devel linux-firmware linux-zen linux-zen-headers nano vi grub os-prober efibootmgr bluez bluez-utils networkmanager
+  	    pacstrap -K /mnt $(cat /etc/installer_cache/packages.txt)
     	    genfstab -U /mnt > /mnt/etc/fstab
-	    cp inside_chroot.sh /mnt/etc/.
-            cp *.txt /mnt/etc/.
-  	    arch-chroot /mnt /bin/bash /etc/inside_chroot.sh
+	    cp inside_chroot.sh /mnt/etc/installer_cache/.
+            cp *.txt /mnt/etc/installer_cache/.
+  	    arch-chroot /mnt /bin/bash /etc/installer_cache/inside_chroot.sh
 
         elif [[ $menu == "5" ]]; then
             exit

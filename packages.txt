@@ -1,0 +1,15 @@
+base
+base-devel
+linux-firmware
+linux-zen
+linux-zen-headers
+nano
+vi
+grub
+os-prober
+efibootmgr
+bluez
+bluez-utils
+networkmanager
+dialog
+
