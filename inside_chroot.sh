@@ -20,7 +20,7 @@ if [ -f "/etc/installer_cache/username.txt" ]; then
      useradd -m "$username"
   fi
   usermod -aG wheel,audio,video,storage $username
-  echo "$username ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+  echo "%wheel ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 fi
 
 if [[ -d /sys/firmware/efi ]]; then
