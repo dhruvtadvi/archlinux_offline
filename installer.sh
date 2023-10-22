@@ -119,7 +119,11 @@ mount_partition() {
 
 menu() {
     while true; do
-        menu=$(dialog --menu "Arch offline installer" 12 45 4 1 "Partitioning" 2 "Hostname" 3 "add user" 4 "Install" 5 "Exit" 2>&1 >/dev/tty)
+        if [ ! -d /sys/firmware/efi ]; then
+	    menu=$(dialog --menu "Arch offline installer" 12 45 4 1 "Partitioning" 2 "Hostname" 3 "add user" 4 "Install" 5 "Exit" 6 "disk partition name" 2>&1 >/dev/tty)
+        else
+            menu=$(dialog --menu "Arch offline installer" 12 45 4 1 "Partitioning" 2 "Hostname" 3 "add user" 4 "Install" 5 "Exit" 2>&1 >/dev/tty)
+	fi
         if [[ $menu == "1" ]]; then
             menu=$(dialog --menu "What would you like to do?" 12 35 4 1 "Format partition" 2 "Mount partition" 3 "Back" 2>&1 >/dev/tty)
             if [[ $menu == "1" ]]; then
@@ -162,6 +166,8 @@ menu() {
 	        echo "$password" > password.txt
 	    fi
 	elif [[ $menu == "4" ]]; then
+            pacman-key --init
+            pacman-key --populate
 	    root_partition=$(get_partition_by_mount_point "/mnt")
 	    echo $root_partition > root_partition.txt
 	    if grep -qi 'vendor_id.*intel' /proc/cpuinfo; then
@@ -169,17 +175,27 @@ menu() {
             elif grep -qi 'vendor_id.*amd' /proc/cpuinfo; then
                 pacstrap /mnt amd-ucode
             fi
-  	    pacstrap -K /mnt $(cat /etc/installer_cache/packages.txt)
+            if [[ -d /sys/firmware/efi ]]; then
+              pacstrap -K /mnt $(cat /etc/installer_cache/packages.txt) efibootmgr
+            else
+              pacstrap -K /mnt $(cat /etc/installer_cache/packages.txt)
+            fi
     	    genfstab -U /mnt > /mnt/etc/fstab
+            mkdir -p /mnt/etc/installer_cache/
 	    cp inside_chroot.sh /mnt/etc/installer_cache/.
             cp *.txt /mnt/etc/installer_cache/.
   	    arch-chroot /mnt /bin/bash /etc/installer_cache/inside_chroot.sh
 
         elif [[ $menu == "5" ]]; then
             exit
-        fi
+	elif [[ $menu == "6" ]]; then
+            boot_partition_bios=$(dialog --inputbox "enter disk partition" 10 60 2>&1 >/dev/tty)
+	    if [ $? -eq 0 ]; then
+               echo $boot_partition_bios > boot_partition_bios.txt
+            else
+               continue
+            fi
+         fi
     done
 }
 menu
-
-

@@ -20,17 +20,23 @@ if [ -f "/etc/installer_cache/username.txt" ]; then
      useradd -m "$username"
   fi
   usermod -aG wheel,audio,video,storage $username
-  echo "$username	ALL=(ALL:ALL) ALL" >> /etc/sudoers
+  echo "$username ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
 fi
 
 if [[ -d /sys/firmware/efi ]]; then
     echo "Installing GRUB on EFI system..."
-    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
-    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub --removable
+    if [[ -d /boot/efi ]]; then
+       grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch
+       grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch --removable
+    else
+       grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch
+       grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch --removable
+    fi
 else
+    boot_partition_bios=$(cat /etc/installer_cache/boot_partition_bios.txt)
     echo "Installing GRUB on MBR system..."
-    grub-install --target=i386-pc  $root_partition
-    grub-install --target=i386-pc $root_partition --removable
+    grub-install --target=i386-pc  $boot_partition_bios
+    grub-install --target=i386-pc $boot_partition_bios --removable
 fi
 
 mkdir -p /etc/systemd/system/getty@tty1.service.d/

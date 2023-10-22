@@ -7,7 +7,6 @@ nano
 vi
 grub
 os-prober
-efibootmgr
 bluez
 bluez-utils
 networkmanager
