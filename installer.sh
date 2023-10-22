@@ -66,11 +66,6 @@ create_swap_partition() {
         exit 1
     fi
     
-    # Check if the partition already exists
-    if [ -n "$(lsblk -no UUID "$device" 2>/dev/null)" ]; then
-        echo "Error: Partition already exists on $device."
-        exit 1
-    fi
     
     # Create swap partition
     echo "Creating swap partition on $device..."
