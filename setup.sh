@@ -19,3 +19,4 @@ mkdir -p $root/home/root
 cp packages.txt $root/etc/installer_cache/.
 cp inside_chroot.sh $root/home/root/.
 cp installer.sh $root/home/root/.
+cp pacman.conf $root/etc/.
