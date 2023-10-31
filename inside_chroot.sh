@@ -15,7 +15,7 @@ fi
 if [ -f "/etc/installer_cache/username.txt" ]; then
   if [ -f "/etc/installer_cache/password.txt" ]; then
     password=$(cat /etc/installer_cache/password.txt)
-    useradd -m -p $(perl -e 'print crypt($ARGV[0], "password")' $password) $username
+    useradd -m -s /usr/bin/zsh -p $(perl -e 'print crypt($ARGV[0], "password")' $password) $username
   else
      useradd -m "$username"
   fi

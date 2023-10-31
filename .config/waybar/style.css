@@ -1,0 +1,121 @@
+* {
+    border: none;
+    border-radius: 0px;
+    /*font-family: VictorMono, Iosevka Nerd Font, Noto Sans CJK;*/
+    font-family: Iosevka, FontAwesome, Noto Sans CJK;
+    font-size: 13px;
+    font-style: normal;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(30, 30, 46, 0); /* Fully transparent background */
+    border-bottom: none; /* Remove horizontal line */
+    color: #f4d9e1;
+}
+
+#workspaces {
+    background: rgba(0, 0, 0, 0); /* Fully transparent workspace */
+    margin: 5px 5px 5px 0; /* Adjust left margin to move the workspaces bar to the left */
+    padding: 5px;
+    border-radius: 16px;
+    border: solid 0px #f4d9e1;
+    font-weight: normal;
+    font-style: normal;
+}
+
+#workspaces button {
+    padding: 0px 5px;
+    border-radius: 16px;
+    color: #928374;
+}
+
+#workspaces button.active {
+    color: #f4d9e1;
+    background-color: transparent;
+    border-radius: 16px;
+}
+
+#workspaces button:hover {
+    background-color: #E6B9C6;
+    color: black;
+    border-radius: 16px;
+}
+
+#custom-launcher {
+    color: #e5809e;
+    background-color: transparent; /* Set background color to transparent */
+    border-radius: 0px 24px 0px 0px;
+    margin: 0px 3px; /* Adjust left and right margin to center the icon */
+    padding: 0 20px 0 13px;
+    font-size: 20px;
+}
+
+#cpu {
+    background-color: transparent; /* Semi-transparent black background */
+    border-radius: 16px;
+    margin: 5px 5px 5px 0; /* Adjust right margin to create space between CPU and memory */
+    padding: 0px 10px; /* Adjust padding as needed */
+    font-weight: bold;
+}
+
+#memory {
+    background-color: transparent; /* Semi-transparent black background */
+    border-radius: 16px;
+    margin: 5px 0 5px 5px; /* Adjust left margin to create space between CPU and memory */
+    padding: 0px 10px; /* Adjust padding as needed */
+    font-weight: bold;
+}
+
+#custom-randwall,
+#network,
+#pulseaudio,
+#clock {
+    background: transparent; /* Semi-transparent background */
+    border-radius: 8px;
+    margin: 5px 5px 5px 0; /* Adjust right margin to create space between modules */
+    padding: 5px; /* Adjust padding as needed */
+}
+
+#custom-launcher {
+    background: transparent; /* Semi-transparent background */
+    border-radius: 0px 24px 0px 0px;
+    margin: 0px 3px; /* Adjust left and right margin to center the icon */
+    padding: 0 20px 0 13px;
+    font-size: 19px;
+}
+
+#tray {
+    background: transparent; /* Fully transparent background */
+    border-radius: 16px;
+    margin: 5px 0 5px 5px; /* Adjust left margin to create space between modules */
+    padding: 0px 5px; /* Adjust padding as needed */
+    opacity: 0.8; /* Set opacity for the tray (0 is fully transparent, 1 is fully opaque) */
+}
+
+/* Additional CSS for the tray items if needed */
+#tray .item {
+    background: transparent; /* Fully transparent background for tray items */
+    /* Add more styles for tray items if needed */
+}
+
+#player-label {
+    background: #f4d9e1; /* Set background to transparent */
+    border: none; /* Remove border if there is any */
+    font-size: 16px; /* Adjust font size as needed */
+    padding: 10px; /* Add padding around the label */
+    opacity: 0.8; /* Set opacity for the label (0 is fully transparent, 1 is fully opaque) */
+}
+
+/* Optionally, you can style the icons inside the player label */
+#player-label .playing-icon {
+    color: #E5B9C6; /* Color for the playing icon */
+}
+
+#player-label .paused-icon {
+    color: #928374; /* Color for the paused icon */
+}
+
+
+
+/* Add or modify styles for other elements as needed */

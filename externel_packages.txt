@@ -1,0 +1,4 @@
+hyprland
+otf-font-awesome
+waybar
+ttf-jetbrains-mono-nerd
