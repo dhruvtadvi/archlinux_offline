@@ -17,13 +17,13 @@ jobs:
     - name: Download file
       run: |
         mkdir sources
-        wget ${{ inputs.file_url }} -O input_file.txt | tee logs.txt
-        echo "downloaded inputfile" | tee -a logs.txt
-        wget --input-file=input_file.txt --continue --directory-prefix=sources/ | tee -a logs.txt
+        wget ${{ inputs.file_url }} -O input_file.txt > logs.txt
+        echo "downloaded inputfile" >> logs.txt
+        wget --input-file=input_file.txt --continue --directory-prefix=sources/ >> logs.txt
 
     - name: Compress file
       run: |
-        echo 'compression logs' | tee -a logs.txt
+        echo 'compression logs' >> logs.txt
         zip -r sources.zip sources 
 
     - name: Upload zip to release
