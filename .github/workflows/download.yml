@@ -18,12 +18,13 @@ jobs:
       run: |
         mkdir sources
         wget ${{ inputs.file_url }} -O input_file.txt | tee logs.txt
-        echo "downloaded inputfile" >> logs.txt
-        wget --input-file=input_file.txt --continue --directory-prefix=sources/ | tee logs.txt
+        echo "downloaded inputfile" | tee -a logs.txt
+        wget --input-file=input_file.txt --continue --directory-prefix=sources/ | tee -a logs.txt
 
     - name: Compress file
       run: |
-        zip -r sources.zip sources
+        echo 'compression logs' | tee -a logs.txt
+        zip -r sources.zip sources 
 
     - name: Upload zip to release
       uses: svenstaro/upload-release-action@v2
