@@ -17,9 +17,9 @@ jobs:
     - name: Download file
       run: |
         mkdir sources
-        wget ${{ inputs.file_url }} -O input_file.txt | tee -a logs.txt
+        wget ${{ inputs.file_url }} -O input_file.txt | tee logs.txt
         echo "downloaded inputfile" >> logs.txt
-        wget --input-file=input_file.txt --continue --directory-prefix=sources/ | tee -a logs.txt
+        wget --input-file=input_file.txt --continue --directory-prefix=sources/ | tee logs.txt
 
     - name: Compress file
       run: |
