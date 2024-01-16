@@ -37,15 +37,17 @@ jobs:
         release_name: Release ${{ github.run_number }}
         draft: false
         prerelease: false
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Upload Artifacts
+    - name: Upload Artifacts sources.zip
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: sources.zip
         asset_name: sources.zip
 
-    - name: Upload Artifacts
+    - name: Upload Artifacts logs.txt
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
