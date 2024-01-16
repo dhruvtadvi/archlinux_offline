@@ -25,9 +25,30 @@ jobs:
       run: |
         zip -r sources.zip sources
 
-    - name: Upload to releases
-      uses: softprops/action-gh-release@v1
+    - name: Get runner ID
+      id: runner_id
+      run: echo "::set-output name=id::$(hostname)"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
       with:
-        files: sources.zip logs.txt
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: ${{ steps.runner_id.outputs.id }}
+        release_name: Release ${{ github.run_number }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Artifacts
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: sources.zip
+        asset_name: sources.zip
+
+    - name: Upload Artifacts
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: logs.txt
+        asset_name: logs.txt
+
