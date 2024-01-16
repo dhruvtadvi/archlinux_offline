@@ -17,10 +17,10 @@ jobs:
     - name: Download file
       run: |
         mkdir sources
-        wget ${{ inputs.file_url }} -O input_file.txt > logs.txt
-        echo "downloaded inputfile" >> logs.txt
-        wget --input-file=input_file.txt --continue --directory-prefix=sources/ >> logs.txt
-
+        wget ${{ inputs.file_url }} -O input_file.txt
+        echo "downloaded inputfile"
+        wget --input-file=input_file.txt --continue --directory-prefix=sources/
+        
     - name: Compress file
       run: |
         echo 'compression logs' >> logs.txt
@@ -34,14 +34,3 @@ jobs:
         tag: ${{ github.ref }}
         overwrite: true
         file_glob: true
-
-    
-    - name: Upload log to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: logs.txt
-        tag: ${{ github.ref }}
-        overwrite: true
-        file_glob: true
-
