@@ -1,0 +1,32 @@
+name: Download, Compress, and Upload
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_url:
+        description: 'URL of the file to download'
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Download file
+      run: |
+        mkdir sources
+        wget ${{ inputs.file_url }} -O input_file.txt
+        wget --input-file=input_file.txt --continue --directory-prefix=sources/
+
+    - name: Compress file
+      run: |
+        zip -r sources.zip sources
+
+    - name: Upload to releases
+      uses: softprops/action-gh-release@v1
+      with:
+        files: sources.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
