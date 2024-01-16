@@ -17,8 +17,9 @@ jobs:
     - name: Download file
       run: |
         mkdir sources
-        wget ${{ inputs.file_url }} -O input_file.txt
-        wget --input-file=input_file.txt --continue --directory-prefix=sources/
+        wget ${{ inputs.file_url }} -O input_file.txt | tee -a logs.txt
+        echo "downloaded inputfile" >> logs.txt
+        wget --input-file=input_file.txt --continue --directory-prefix=sources/ | tee -a logs.txt
 
     - name: Compress file
       run: |
@@ -27,6 +28,6 @@ jobs:
     - name: Upload to releases
       uses: softprops/action-gh-release@v1
       with:
-        files: sources.zip
+        files: sources.zip logs.txt
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
