@@ -46,6 +46,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: sources.zip
         asset_name: sources.zip
+        asset_content_type: application/zip
 
     - name: Upload Artifacts logs.txt
       uses: actions/upload-release-asset@v1
@@ -53,4 +54,5 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: logs.txt
         asset_name: logs.txt
+        asset_content_type: text/plain
 
