@@ -26,6 +26,17 @@ jobs:
         echo 'compression logs' >> logs.txt
         zip -r sources.zip sources 
 
+    - name: Create Release
+      id: create-new-release
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+
     - name: Upload zip to release
       uses: svenstaro/upload-release-action@v2
       with:
