@@ -1,11 +1,10 @@
-name: Download, Compress, and Upload
-
 on:
   workflow_dispatch:
     inputs:
       file_url:
         description: 'URL of the file to download'
         required: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
