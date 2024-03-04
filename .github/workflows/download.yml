@@ -18,8 +18,6 @@ jobs:
       run: |
         mkdir sources
         wget ${{ inputs.file_url }} -O input_file.txt
-        echo "downloaded inputfile"
-        mkdir sources
         wget --input-file=input_file.txt --continue --directory-prefix=sources/
         
     - name: Compress file
